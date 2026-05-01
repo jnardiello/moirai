@@ -10,6 +10,7 @@ const interactionRaw = document.getElementById('interaction-raw');
 const interactionRawContent = document.getElementById('interaction-raw-content');
 const interactionTerminal = document.getElementById('interaction-terminal');
 const interactionInput = document.getElementById('interaction-input');
+const navLogo = document.getElementById('nav-logo');
 const navBoard = document.getElementById('nav-board');
 const navArchive = document.getElementById('nav-archive');
 const planTabButton = document.getElementById('tab-plan');
@@ -101,10 +102,13 @@ const sortOrder = {
 let archiveFilter = [];
 let archiveSort = 'newest';
 
-navBoard.addEventListener('click', (event) => {
+function navigateToBoard(event) {
   event.preventDefault();
   showView('board');
-});
+}
+
+navLogo.addEventListener('click', navigateToBoard);
+navBoard.addEventListener('click', navigateToBoard);
 
 navArchive.addEventListener('click', (event) => {
   event.preventDefault();
@@ -2592,6 +2596,7 @@ async function ensureInteractionForTask(task, forceReload = false) {
   if (!runId) {
     resetInteractionPanel();
     renderInteractionHeader(task);
+    renderPlanPanel(task);
     renderTranscript();
     return;
   }
