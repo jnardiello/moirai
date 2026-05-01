@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moirai</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5/css/xterm.min.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>Moirai</h1>
+      <nav class="header-nav">
+        <a href="#" class="nav-link active" id="nav-board">Board</a>
+        <a href="#" class="nav-link" id="nav-archive">Archive</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="board" class="board"></main>
+  <section id="archive-view" class="archive-view hidden"></section>
+
+  <section id="task-view" class="task-view hidden">
+    <div id="agent-bar" class="agent-bar"></div>
+    <div class="task-split">
+      <div id="task-content" class="task-left"></div>
+      <aside class="task-right">
+        <div class="interaction-panel">
+          <div id="interaction-header" class="interaction-header">
+            <div>
+              <div class="detail-section-label">Agent Transcript</div>
+              <div class="interaction-title">No Active Task</div>
+              <div class="interaction-subtitle">Open a task to inspect its run transcript.</div>
+            </div>
+          </div>
+          <div class="interaction-tabs">
+            <button class="interaction-tab" data-tab="plan" id="tab-plan">Plan</button>
+            <button class="interaction-tab interaction-tab-active" data-tab="transcript" id="tab-transcript">Activity</button>
+            <button class="interaction-tab" data-tab="terminal" id="tab-terminal">Terminal</button>
+            <button class="interaction-tab" data-tab="raw" id="tab-raw">Full Log</button>
+          </div>
+          <div class="interaction-body">
+            <div id="interaction-plan" class="interaction-view interaction-plan hidden"></div>
+            <div id="interaction-transcript" class="interaction-view interaction-transcript"></div>
+            <div id="interaction-terminal" class="interaction-view interaction-terminal hidden"></div>
+            <div id="interaction-raw" class="interaction-view interaction-raw hidden">
+              <pre id="interaction-raw-content" class="interaction-raw-content"></pre>
+            </div>
+          </div>
+          <div id="interaction-input" class="interaction-input hidden"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5/lib/xterm.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0/lib/addon-fit.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

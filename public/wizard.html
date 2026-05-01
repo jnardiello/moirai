@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moirai Setup</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="wizard-page">
+  <main class="wizard-shell">
+    <section class="wizard-panel">
+      <p class="wizard-kicker">Moirai</p>
+      <h1>Set up this board</h1>
+      <p id="wizard-summary" class="wizard-summary">Checking this folder...</p>
+
+      <div class="wizard-section">
+        <h2>Project Root</h2>
+        <code id="wizard-root">...</code>
+      </div>
+
+      <div class="wizard-section">
+        <h2>Markdown Structure</h2>
+        <ul id="wizard-dirs" class="wizard-list"></ul>
+      </div>
+
+      <div class="wizard-section">
+        <h2>Repositories</h2>
+        <p class="wizard-help">Edit the repository map if your implementation repos live somewhere else.</p>
+        <textarea id="wizard-repositories" spellcheck="false"></textarea>
+      </div>
+
+      <div class="wizard-actions">
+        <button id="wizard-create" type="button">Create or Repair Board</button>
+        <button id="wizard-refresh" type="button" class="secondary-button">Refresh</button>
+      </div>
+
+      <pre id="wizard-output" class="wizard-output"></pre>
+    </section>
+  </main>
+
+  <script src="wizard.js"></script>
+</body>
+</html>

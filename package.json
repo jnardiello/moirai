@@ -1,0 +1,31 @@
+{
+  "name": "@jnardiello/moirai",
+  "version": "0.1.0",
+  "description": "Local agentic kanban board for markdown backlogs and coding agents",
+  "license": "MIT",
+  "main": "server.js",
+  "bin": {
+    "moirai": "bin/moirai.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "public/",
+    "server.js",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node bin/moirai.js --no-open",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "js-yaml": "^4.1.0",
+    "marked": "^15.0.0",
+    "node-pty": "^1.2.0-beta.12",
+    "ws": "^8.20.0"
+  }
+}
