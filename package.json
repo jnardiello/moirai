@@ -1,6 +1,6 @@
 {
   "name": "@jnardiello/moirai",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local agentic kanban board for markdown backlogs and coding agents",
   "license": "MIT",
   "main": "server.js",

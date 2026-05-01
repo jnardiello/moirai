@@ -54,9 +54,38 @@ Useful commands:
 moirai init
 moirai doctor
 moirai --root /path/to/project --port 3001
+moirai --no-update-check
 ```
 
 Runtime logs, local agent discovery, and worktrees live under `.moirai/runtime/` and `.moirai/local.json`.
+
+When Moirai is installed globally, startup checks npm for a newer published version and prints an update suggestion when one is available. Set `MOIRAI_NO_UPDATE_CHECK=1` or pass `--no-update-check` to skip that advisory check.
+
+## Release
+
+```sh
+make publish
+```
+
+`make publish` requires a clean git worktree, verifies that the current package version is not already published, runs tests, creates a `vX.Y.Z` git tag if needed, previews the npm package, publishes the current version to npm, pushes the branch and release tag to the configured git remote, and creates a GitHub Release through `gh`.
+
+To bump as part of the release, pass an npm version kind or exact version:
+
+```sh
+make publish VERSION=patch
+```
+
+To use a non-default git remote:
+
+```sh
+make publish GIT_REMOTE=upstream
+```
+
+If npm requires two-factor authentication, run it with npm's standard OTP config:
+
+```sh
+NPM_CONFIG_OTP=123456 make publish
+```
 
 ## Configuration
 

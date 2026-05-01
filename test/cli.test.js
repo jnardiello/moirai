@@ -5,12 +5,13 @@ const path = require('path');
 const { parseCliArgs, formatDoctor } = require('../lib/cli');
 
 test('parseCliArgs supports default start command and common flags', () => {
-  const parsed = parseCliArgs(['--root', '.', '--port', '4555', '--host', '0.0.0.0', '--no-open']);
+  const parsed = parseCliArgs(['--root', '.', '--port', '4555', '--host', '0.0.0.0', '--no-open', '--no-update-check']);
   assert.equal(parsed.command, 'start');
   assert.equal(parsed.root, process.cwd());
   assert.equal(parsed.port, 4555);
   assert.equal(parsed.host, '0.0.0.0');
   assert.equal(parsed.open, false);
+  assert.equal(parsed.updateCheck, false);
 });
 
 test('parseCliArgs supports doctor command', () => {
