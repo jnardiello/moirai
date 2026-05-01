@@ -69,7 +69,9 @@ make publish
 
 `make publish` requires a clean git worktree, verifies that the current package version is not already published, runs tests, creates a `vX.Y.Z` git tag if needed, previews the npm package, publishes the current version to npm, pushes the branch and release tag to the configured git remote, and creates a GitHub Release through `gh`.
 
-To bump as part of the release, pass an npm version kind or exact version:
+When no version is provided, `make publish` asks whether the release is a patch, minor, or major release and shows the resulting version before continuing. The version is calculated from the latest npm release when available, falling back to the local `package.json` version.
+
+To skip the prompt, pass a release type or exact version:
 
 ```sh
 make publish VERSION=patch

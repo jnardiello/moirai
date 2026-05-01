@@ -32,10 +32,23 @@ function resolveVersion(currentVersion, requestedVersion) {
 }
 
 function main() {
-  const packageJsonPath = path.resolve(__dirname, '..', 'package.json');
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-  const requestedVersion = process.argv[2];
-  console.log(resolveVersion(packageJson.version, requestedVersion));
+  const args = process.argv.slice(2);
+  let currentVersion;
+  let requestedVersion;
+
+  if (args.length === 1) {
+    const packageJsonPath = path.resolve(__dirname, '..', 'package.json');
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+    currentVersion = packageJson.version;
+    requestedVersion = args[0];
+  } else if (args.length === 2) {
+    currentVersion = args[0];
+    requestedVersion = args[1];
+  } else {
+    throw new Error('Usage: resolve-version.js [current-version] <patch|minor|major|x.y.z>');
+  }
+
+  console.log(resolveVersion(currentVersion, requestedVersion));
 }
 
 if (require.main === module) {

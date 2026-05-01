@@ -6,7 +6,7 @@ PUBLISH_ACCESS ?= public
 PUBLISH_TAG ?= latest
 GITHUB_RELEASE ?= 1
 
-.PHONY: help test pack release-check publish
+.PHONY: help test pack publish
 
 help:
 	@printf "%s\n" \
@@ -16,7 +16,7 @@ help:
 		"  make publish              Release to npm and GitHub." \
 		"" \
 		"Publish options:" \
-		"  VERSION=patch             Optional npm version argument before publishing." \
+		"  VERSION=patch             Optional release type or exact version; skips prompt." \
 		"  PUBLISH_ACCESS=public     npm package access level." \
 		"  PUBLISH_TAG=latest        npm dist-tag to publish." \
 		"  GIT_REMOTE=origin         Git remote used for pushing the release." \
@@ -29,7 +29,7 @@ test:
 pack:
 	npm pack --dry-run
 
-release-check:
+publish:
 	@set -eu; \
 	if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then \
 		printf "Not a git repository.\n" >&2; \
@@ -50,27 +50,44 @@ release-check:
 	fi; \
 	name=$$(node -p "require('./package.json').name"); \
 	current_version=$$(node -p "require('./package.json').version"); \
-	if [ -n "$(VERSION)" ]; then \
-		version=$$(node scripts/resolve-version.js "$(VERSION)"); \
-	else \
-		version="$$current_version"; \
-	fi; \
 	status=$$(git status --porcelain); \
 	if [ -n "$$status" ]; then \
-		printf "Dirty worktree; commit/stash changes before publishing %s@%s.\n" "$$name" "$$version" >&2; \
+		printf "Dirty worktree; commit/stash changes before publishing %s.\n" "$$name" >&2; \
 		exit 1; \
 	fi; \
+	baseline_version=$$(npm view "$$name" version 2>/dev/null || true); \
+	if [ -z "$$baseline_version" ]; then \
+		baseline_version="$$current_version"; \
+	fi; \
+	release_type="$(VERSION)"; \
+	if [ -z "$$release_type" ]; then \
+		patch_version=$$(node scripts/resolve-version.js "$$baseline_version" patch); \
+		minor_version=$$(node scripts/resolve-version.js "$$baseline_version" minor); \
+		major_version=$$(node scripts/resolve-version.js "$$baseline_version" major); \
+		printf "Current package version: %s\n" "$$current_version"; \
+		printf "Latest release baseline: %s\n" "$$baseline_version"; \
+		printf "Release type:\n"; \
+		printf "  patch -> %s\n" "$$patch_version"; \
+		printf "  minor -> %s\n" "$$minor_version"; \
+		printf "  major -> %s\n" "$$major_version"; \
+		while :; do \
+			printf "Choose release type [patch/minor/major]: "; \
+			IFS= read -r release_type; \
+			case "$$release_type" in \
+				patch|minor|major) break ;; \
+				*) printf "Please choose patch, minor, or major.\n" >&2 ;; \
+			esac; \
+		done; \
+	fi; \
+	version=$$(node scripts/resolve-version.js "$$baseline_version" "$$release_type"); \
 	if npm view "$$name@$$version" version >/dev/null 2>&1; then \
 		printf "%s@%s is already published. Bump package.json before publishing.\n" "$$name" "$$version" >&2; \
 		exit 1; \
 	fi; \
-	printf "Ready to release %s@%s.\n" "$$name" "$$version"
-
-publish: release-check test
-	@set -eu; \
-	current_version=$$(node -p "require('./package.json').version"); \
-	if [ -n "$(VERSION)" ] && [ "$(VERSION)" != "$$current_version" ]; then \
-		npm version "$(VERSION)"; \
+	printf "Ready to release %s@%s.\n" "$$name" "$$version"; \
+	npm test; \
+	if [ "$$current_version" != "$$version" ]; then \
+		npm version "$$version"; \
 	fi; \
 	name=$$(node -p "require('./package.json').name"); \
 	version=$$(node -p "require('./package.json').version"); \
