@@ -59,7 +59,7 @@ moirai --no-update-check
 
 Runtime logs, local agent discovery, and worktrees live under `.moirai/runtime/` and `.moirai/local.json`.
 
-When Moirai is installed globally, startup checks npm for a newer published version and prints an update suggestion when one is available. Set `MOIRAI_NO_UPDATE_CHECK=1` or pass `--no-update-check` to skip that advisory check.
+When Moirai is installed globally, startup checks npm for a newer published version before launching the board. If an update is available, Moirai asks whether to install it with `npm install -g @jnardiello/moirai@latest`; when confirmed, it updates first and then restarts the command with the update check disabled for that run. Set `MOIRAI_NO_UPDATE_CHECK=1` or pass `--no-update-check` to skip the check.
 
 ## Release
 
