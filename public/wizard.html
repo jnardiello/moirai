@@ -9,32 +9,58 @@
 <body class="wizard-page">
   <main class="wizard-shell">
     <section class="wizard-panel">
-      <p class="wizard-kicker">Moirai</p>
-      <h1>Set up this board</h1>
-      <p id="wizard-summary" class="wizard-summary">Checking this folder...</p>
+      <div class="wizard-header">
+        <h1>Set up this board</h1>
+        <button id="wizard-refresh" type="button" class="wizard-icon-btn wizard-refresh" aria-label="Recheck this folder" title="Recheck">↻</button>
+      </div>
+      <p id="wizard-summary" class="wizard-summary" aria-live="polite">Checking this folder…</p>
+
+      <div id="wizard-banner" class="wizard-banner hidden" role="alert" aria-live="assertive" tabindex="-1"></div>
+      <div id="wizard-legacy-note" class="wizard-note hidden"></div>
 
       <div class="wizard-section">
-        <h2>Project Root</h2>
-        <code id="wizard-root">...</code>
+        <h2>Project root</h2>
+        <div class="wizard-root">
+          <code id="wizard-root">…</code>
+          <button id="wizard-root-copy" type="button" class="wizard-icon-btn" aria-label="Copy path" title="Copy path">⧉</button>
+        </div>
       </div>
 
-      <div class="wizard-section">
-        <h2>Markdown Structure</h2>
-        <ul id="wizard-dirs" class="wizard-list"></ul>
+      <div class="wizard-section" id="wizard-dirs-section">
+        <h2>Board folders</h2>
+        <div class="wizard-dir-group hidden" id="wizard-dirs-existing-group">
+          <h3 class="wizard-subhead">Existing</h3>
+          <ul id="wizard-dirs-existing" class="wizard-dirs"></ul>
+        </div>
+        <div class="wizard-dir-group hidden" id="wizard-dirs-missing-group">
+          <h3 class="wizard-subhead">Missing — will be created</h3>
+          <ul id="wizard-dirs-missing" class="wizard-dirs"></ul>
+        </div>
+        <div id="wizard-dirs-skeleton">
+          <span class="wizard-skeleton is-block"></span>
+        </div>
       </div>
 
-      <div class="wizard-section">
+      <div class="wizard-section" id="wizard-repos-section">
         <h2>Repositories</h2>
-        <p class="wizard-help">Edit the repository map if your implementation repos live somewhere else.</p>
-        <textarea id="wizard-repositories" spellcheck="false"></textarea>
+        <p class="wizard-help">Tasks reference repositories by name. Paths are relative to the project root (absolute paths also work). The <code>backlog</code> entry is required and points at this project.</p>
+        <ul id="wizard-repo-rows" class="wizard-repo-list"></ul>
+        <p id="wizard-repo-empty" class="wizard-empty-hint hidden">No additional repositories configured.</p>
+        <button id="wizard-add-repo" type="button" class="wizard-add-row">+ Add repository</button>
+        <details class="wizard-advanced" id="wizard-advanced">
+          <summary>Advanced (JSON)</summary>
+          <div class="wizard-advanced-body">
+            <p class="wizard-advanced-help">Edit the repository map as JSON. Closing this panel applies your changes to the form above.</p>
+            <label class="wizard-advanced-help" for="wizard-repositories" style="display:block;font-weight:600;">Repository map</label>
+            <textarea id="wizard-repositories" spellcheck="false"></textarea>
+          </div>
+        </details>
       </div>
 
       <div class="wizard-actions">
-        <button id="wizard-create" type="button">Create or Repair Board</button>
-        <button id="wizard-refresh" type="button" class="secondary-button">Refresh</button>
+        <button id="wizard-create" type="button">Create board</button>
+        <a id="wizard-open" class="hidden" href="/">Go to board</a>
       </div>
-
-      <pre id="wizard-output" class="wizard-output"></pre>
     </section>
   </main>
 
